@@ -1,0 +1,9 @@
+mpi_head:
+  build: .
+  ports:
+    - "22"
+  links:
+    - mpi_node
+
+mpi_node:
+  build: .
