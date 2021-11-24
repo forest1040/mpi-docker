@@ -28,7 +28,7 @@ from mpi4py import MPI
 def pprint(str="", end="\n", comm=MPI.COMM_WORLD):
     """Print for MPI parallel programs: Only rank 0 prints *str*."""
     if comm.rank == 0:
-        print str+end,
+        print(str+end)
 
 #=============================================================================
 # Main
@@ -46,7 +46,6 @@ def mvp_main(BENCHMARH="MPI Matrix action on a vector",
 
     pprint("============================================================================")
     pprint(" Running %d parallel MPI processes" % comm.size)
-
 
     my_size = size // comm.size     # Every process computes a vector of lenth *my_size*
     size = comm.size*my_size        # size must be integer multiple of comm.size
@@ -68,7 +67,7 @@ def mvp_main(BENCHMARH="MPI Matrix action on a vector",
 
     # Create my (local) slice of the matrix
     my_M = np.zeros((my_size, size))
-    for i in xrange(my_size):
+    for i in range(my_size):
         j = (my_offset+i-1) % size
         my_M[i,j] = 1.0
 
@@ -77,7 +76,7 @@ def mvp_main(BENCHMARH="MPI Matrix action on a vector",
         comm.Barrier()                    ### Start stopwatch ###
         t_start = MPI.Wtime()
 
-        for t in xrange(20):
+        for t in range(20):
             my_new_vec = np.inner(my_M, vec)
 
             comm.Allgather(
