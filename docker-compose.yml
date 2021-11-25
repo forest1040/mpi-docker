@@ -1,9 +1,27 @@
-mpi_head:
-  build: .
-  ports:
-    - "22"
-  links:
-    - mpi_node
+version: "3.5"
 
-mpi_node:
-  build: .
+services:
+  mpi_head:
+    build: .
+    ports:
+      - "22"
+    hostname: "mpihead"
+    networks:
+      - "container-link"
+  mpi_node:
+    build: .
+    hostname: "mpinode"
+    networks:
+      - "container-link"
+
+networks:
+  default:
+    external:
+      name: "bridge"
+  container-link:
+    name: "docker.internal"
+    driver: "bridge"
+    ipam:
+      driver: "default"
+      config:
+        - subnet: "172.30.100.0/24"
