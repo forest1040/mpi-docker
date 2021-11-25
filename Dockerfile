@@ -55,5 +55,20 @@ ENV TRIGGER 1
 ADD mpi4py_benchmarks ${HOME}/mpi4py_benchmarks
 RUN chown -R ${USER}:${USER} ${HOME}/mpi4py_benchmarks
 
+# mptensor build
+RUN cd ${HOME} && git clone https://github.com/smorita/mptensor.git
+ADD Makefile.option ${HOME}/mptensor/
+RUN cd ${HOME}/mptensor && mkdir build && cd build && \
+    cmake -DSCALAPACK_LIB=/usr/lib/x86_64-linux-gnu/libscalapack-openmpi.so ../ && \
+    make -j ${JOBS}
+
+# mptensor test build
+RUN cd ${HOME}/mptensor/tests && \
+    make -j ${JOBS}
+
+# mptensor examples/Ising_2D build
+RUN cd ${HOME}/mptensor/examples/Ising_2D && \
+    make -j ${JOBS}
+
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]

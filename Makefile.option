@@ -1,0 +1,4 @@
+##### Ubuntu 20.04 #####
+CXX = mpicxx
+CXXFLAGS = -std=c++11 -O3 -fopenmp
+LDFLAGS = -lscalapack-openmpi -llapack -lblas
